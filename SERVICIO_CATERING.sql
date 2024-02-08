@@ -100,7 +100,7 @@ create table menu(
 
 create table ingredientes(
 	id_ingrediente int, 
-    precio_unidad int, 
+    precio_unidad decimal(5,2), 
     unidad_medida varchar(20),
     cantidad_requerida int, 
     nombre_ingrediente varchar(20),
@@ -111,7 +111,7 @@ create table ingredientes(
 
 create table proveedor(
 	id_proveedor int, 
-    nombre_proveedor varchar(20),
+    nombre_proveedor varchar(50),
     telefono int, 
     correo varchar(50),
     cantidad_disponible int, 
@@ -120,7 +120,7 @@ create table proveedor(
     ciudad varchar(20),
     primary key(id_proveedor)
 );
-
+alter table proveedor drop column cantidad_disponible;
 create table inventario(
 	id_inventario int, 
     nombre_producto varchar(20),
@@ -150,38 +150,80 @@ alter table inventario add foreign key (id_proveedor) references proveedor(id_pr
 
 
 -- INSERTANDO VALORES 
-
+-- 1)
 insert into persona (dni,primer_nombre,segundo_nombre,apellido_paterno,apellido_materno,correo,telefono) 
 values 
-	-- (74863840,'kerin','sebastian','larico','huillca','y_4_1_0@hotmail.com',988860462);
+	(74863840,'kerin','sebastian','larico','huillca','y_4_1_0@hotmail.com',988860462),
     (29614137,'marco','sandro','sifuentes','lopez','tdcoatibb@gmail.com',965822374);
 select * from persona;
 
+-- 2)
 insert into cliente(dni,departamento,ciudad,notas_adicionales) 
 values 
-	(74863840,'arequipa','arequipa','solo pido que sean puntuales nada mas , gracias');
+	(74863840,'arequipa','arequipa','solo pido que sean puntuales nada mas gracias');
 select * from cliente ;
 
+-- 3)
 insert into feedback_cliente(id_feedback,comentario,calificacion,fecha_feedback,dni_cliente)
 values
 	(100,'el servicio fue estupendo, la comida estaba buena y fueron puntuales',5,'2023-09-22',74863840);
 select * from feedback_cliente;
 
-insert into evento(id_evento,nombre_evento,fecha_evento,hora_inicio,hora_fin,tipo_evento,ubicacion_evento,dni_cliente)
+-- 4)
+insert into evento(id_evento, nombre_evento, fecha_evento, hora_inicio, hora_fin, tipo_evento, ubicacion_evento, dni_cliente)
 values 
 	(200,'boda de miguel y maria','2024-09-28','19:00:00','03:00:00','boda','av dolores 123',74863840);
 select * from evento;
 
+-- 5)
 insert into empleado(dni,fecha_contratacion,puesto,direccion,salario,id_evento)
 values 
 	(29614137,'2024-05-01','mozo','av bolognesi 1003',2000,200);
 select * from empleado;
 
+-- 6)
 insert into horario_trabajo(id_horario,horario_inicio,horario_fin,fecha,dni_empleado)
 values 
 	(300,'19:00:00','03:00:00','2024-09-28',29614137);
     
+-- 7) 
 insert into tipo_contratacion(id_tipo_contratacion,cantidad,fecha_reserva,tipo_servicio,id_evento)
 values 
 	(400,2,'2024-03-01','movilidad',200);
 select * from tipo_contratacion;
+
+-- 8)
+insert into menu(id_menu, precio_persona, nombre_menu,id_evento)
+values 
+	(500,40,'sabor peruano',200);
+select * from menu;
+
+-- 9)
+insert into ingredientes(id_ingrediente, precio_unidad, unidad_medida, cantidad_requerida, nombre_ingrediente, id_menu)
+values 
+	(600,03.50,'kilogramos',20,'cebolla',500);
+select * from ingredientes;
+
+-- 10)
+insert into pedido(id_pedido, fecha_pedido, precio_total, cantidad_personas, id_evento)
+values 
+	(700, '2024-09-28',800,20,200);
+select * from pedido;
+
+-- 11) 
+insert into proveedor(id_proveedor, nombre_proveedor, telefono, correo, direccion, departamento, ciudad)
+values 
+	(800,'Sabores Andinos Distribuciones Gastronómicas',973154648,'sabores.andinos.distribuciones@gmail.com','los incas 220','arequipa','arequipa');
+select * from proveedor;
+
+-- 12) 
+insert into inventario(id_inventario, nombre_producto, cantidad_disponible, unidad_medida, precio_unidad, id_proveedor)
+values 
+	(900,'cebolla', 120,'kilogramos',03.50,800);
+select * from inventario; 
+
+-- 13) 
+insert into factura(id_factura, fecha_emision, metodo_pago, monto_total, id_pedido, dni_cliente)
+values	
+	(1000, '2024-09-28', 'tarjeta de credito', 800, 700, 74863840);
+select * from factura;
